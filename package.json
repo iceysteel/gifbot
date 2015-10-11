@@ -1,0 +1,12 @@
+{
+  "name": "gifbot",
+  "version": "0.0.1",
+  "description": "A chat bot that replies with gifs instead of just text",
+  "main": "server.js",
+  "repository": "",
+  "author": "Zain Munad",
+  "dependencies": {
+    "express": "^4.10.2",
+    "socket.io": "^1.3.7"
+  }
+}
