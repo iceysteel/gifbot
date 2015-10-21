@@ -9,7 +9,8 @@ body {
 }
 
 form {
-    background: #000;
+
+    background: #bdc3c7;
     padding: 1em;
     position: fixed;
     bottom: 0;
@@ -21,6 +22,7 @@ form input {
     padding: 10px;
     width: 74%;
     margin-right: .5%;
+    border-radius: 5px;
 }
 
 #name {
@@ -32,29 +34,44 @@ form input {
 
 form button {
     width: 9%;
-    background: rgb(130, 224, 255);
+    background: #ecf0f1;
     border: none;
     padding: 10px;
+    border-radius: 5px;
 }
 
 #messages {
     list-style-type: none;
-    margin: 0;
-    padding: 0;
+    margin-bottom: 3em;
 }
 
 #messages li {
-    padding: 5px 10px;
+    background: #bdc3c7;
+    float:left;
+    clear: right;
+    padding: .5em;
+    border-radius: 1em;
+    color: white;
+    font-family: sans;
+    font-size: 1.2em;
 }
 
-#messages li:nth-child(odd) {
-    background: #eee;
-}
 
-#messages bot{
-    background: blue;
+#messages #bot{
+/*    display: block;*/
+    background: #2980b9;
+    float:right;
+    clear: left;
+    padding: .6em;
+    border-radius: 1em;
+    color: white;
+    font-family: sans;
 }
 
 img{
     height:9em;
+    float: right;
+    clear: both;
+    margin: .5em;
+    border-radius: 1em
 }
