@@ -1,8 +1,10 @@
 <!doctype html>
 <html>
   <head>
+    <meta name="viewport" content="initial-scale=1, user-scalable=no">
     <title>gifbot</title>
-    <link rel="stylesheet" type="text/css" href="https://gifbot-iceysteel.c9.io/main.css">
+    <!-- https://gifbot-iceysteel.c9.io/main.css -->
+    <link rel="stylesheet" type="text/css" href="main.css">
   </head>
   <body>
     <ul id="messages"></ul>
@@ -16,6 +18,7 @@
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
       var socket = io();
+      $('#name').val("username");
       //when submit button is clicked send value of messagefield to server
       $('form').submit(function(){
           socket.emit('chat message', 
@@ -29,7 +32,13 @@
       });
       
       socket.on('chat message', function(msg){
+        if(msg.name === "chatbot"){
+          $('#messages').append($('<li id="bot">').text(msg.name + " : " + msg.message));
+          $('#messages').append('<br> <img src="' + msg.gif + '">');
+        }
+        else{
           $('#messages').append($('<li>').text(msg.name + " : " + msg.message));
+        }
       });
     </script>
     

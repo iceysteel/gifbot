@@ -34,27 +34,54 @@ io.on('connection', function(socket){
          .end(function(res){
            //if something bad happened break and send an error message back to the client
            var parsed = JSON.parse(res.body);
-           if(res.error || ~res.body.indexOf('<') || ~parsed.botsay.indexOf('Error') ){
+           if(res.error || ~res.body.indexOf('<') || ~parsed.botsay.indexOf('Error') ){ //typeof parsed.botsay != 'undefined'
              console.log("there was a problem b0ss :", res.error);
              io.emit('chat message', {name: 'system', message: 'there was an error, try sending again'} );
              
            } else {
              console.log("yeee we got a response:", parsed.botsay);
              
-             crunchSentiment(parsed.botsay, msg.name);
+             searchGif(parsed.botsay, msg.name);
            }
          });
       
       
-      //crunch message from chatbot using sentiment analasys
-      function crunchSentiment(botreply, username){
+      //quiery riffsy API using the reply that the bot gave us
+      function searchGif(botreply, username){
+        //start by replaceing spaces in botreply so that we can use it as a quiery
+        var nospaces = botreply.replace(/ /g, "+");
         
-        
+        //next lets use unirest to hit that api
+        unirest.get('http://api.riffsy.com/v1/search')
+         .query({'key' : 'UZ3WTKXQBULU'})
+         .query({'limit' : 1})
+         .query({'tag' : nospaces})
+         .end(function(res){
+           //if something bad happened break and send an error message back to the client
+           var parsed = res.body;
+           if(res.error){
+             console.log("there was a problem b0ss with the gifapi :", res.error);
+             io.emit('chat message', {name: 'system', message: 'there was an error, try sending again'} );
+           } else {
+             console.log("our gif came in: "+ parsed.results[0].title + " " + parsed.results[0].url);
+             sendGif(username, botreply, parsed.results[0].url)
+           }
+         });
       }
       
-      //get gif based on sentiment analasys results
-      
       //attach gif to message and send it to be free (go fly my creation SPREAD YOUR WINGS)
+      function sendGif(username, botreply, gifUrl){
+          //finally emit the chat message! client side will put it into an img tag for us
+          io.emit('chat message', 
+          {
+              name: 'chatbot',
+              message: botreply,
+              gif: gifUrl
+          });
+      }
+      
+      
+      
   });
   
   //what to do when a socket disconnects 
